@@ -2,32 +2,72 @@
 
 var target = Argument("target", "Default");
 
-var directory = @".\src\bin";
-
-var bin = Directory(directory);
-
 var configuration = Argument("Configuration", "Release");
-Task("clean-build-directory")
-    .Does(() =>
-{
-    
-    Information($"Cleaning {directory}....");
-    CleanDirectory(bin);
-});
-Task("building-Kalev.Framework.Cqrs.EventSourcing")
-    .IsDependentOn("clean-build-directory")
-    .Does(() =>
-{
-    Information("Building Project....");    
-    DotNetCoreBuild(@".\src\Kalev.Framework.Cqrs.EventSourcing.csproj",
-    new DotNetCoreBuildSettings() {
-        Configuration = configuration,
-    }
-    );
 
+var solutions = GetFiles("./**/*.sln");
+
+var projects = GetFiles("./**/*.csproj").Select(x => x.GetDirectory());
+
+Task("clean")
+    .Does(() =>
+{
+    foreach (var project in projects)
+    {
+        Information($"Cleaning {project}");
+
+        DotNetCoreClean(project.FullPath);
+    }
+    
+});
+Task("restore")
+    .Does(() =>
+{
+    foreach(var solution in solutions)
+    {
+        Information($"Restoring : {solution}");
+        DotNetCoreRestore(solution.FullPath);
+    }
+});
+Task("build")
+    .Description("Build all projects.")
+    .Does(() =>
+{
+    foreach(var project in projects)
+    {
+        DotNetCoreBuild(project.FullPath, new DotNetCoreBuildSettings() 
+        {
+            Configuration = configuration,
+        });
+    }
+});
+Task("test")
+    .Description("Execute all unit test projects.")
+    .Does(() =>
+{
+    var projects = GetFiles("./test/**/*.Test.csproj");
+    
+    if (projects.Count == 0)
+    {
+        Information("No test projects found.");
+        return;
+    }
+
+    var settings = new DotNetCoreTestSettings
+    {
+        Configuration = configuration,
+        NoBuild = true,
+    };
+
+    foreach(var project in projects)
+    {
+        DotNetCoreTest(project.FullPath, settings);
+    }
 });
 Task("Default")
-  .IsDependentOn("building-Kalev.Framework.Cqrs.EventSourcing")
+  .IsDependentOn("clean")
+  .IsDependentOn("restore")
+  .IsDependentOn("build")
+  .IsDependentOn("test")
   .Does(() =>
 {
   Information("build Complete");
