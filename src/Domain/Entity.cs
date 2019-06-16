@@ -86,8 +86,16 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
                 return;
             }
             
+            events.First()
+                    .SetThisEventStreamAsStartOfSequence();            
+            events.Last()
+                    .SetThisEventStreamAsEndOfSequence();
+
+            int sequenceId = 0;
             foreach(var @event in events)
             {
+                sequenceId++;
+                @event.SetSequenceId(sequenceId);
                 aggregateRootEventHandlerRegistry[@event.GetType()].Invoke(this, new object[] { @event } );
             }
         }
