@@ -7,11 +7,11 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
     {
     protected static bool EqualOperator(ValueObject left, ValueObject right)
     {
-        if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+        if ((left.Equals(null)) ^ (right.Equals(null)))
         {
             return false;
         }
-        return ReferenceEquals(left, null) || left.Equals(right);
+        return left.Equals(null) || left.Equals(right);
     }
 
     protected static bool NotEqualOperator(ValueObject left, ValueObject right)
@@ -33,8 +33,8 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
         IEnumerator<object> otherValues = other.GetAtomicValues().GetEnumerator();
         while (thisValues.MoveNext() && otherValues.MoveNext())
         {
-            if (ReferenceEquals(thisValues.Current, null) ^
-                ReferenceEquals(otherValues.Current, null))
+            if (thisValues.Current.Equals(null) ^
+                otherValues.Current.Equals(null))
             {
                 return false;
             }
