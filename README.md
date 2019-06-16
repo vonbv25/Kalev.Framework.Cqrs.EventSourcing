@@ -1,4 +1,4 @@
 # Kalev.Framework.Cqrs.EventSourcing
 A  simple .Net framework for Cqrs Event sourcing
 
-<img src="https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true&passingText=master%20-%20OK" alt="Project Badge">
+[![Build status](https://ci.appveyor.com/api/projects/status/pmly2opyefbvww8a/branch/master?svg=true)](https://ci.appveyor.com/project/vonbv25/kalev-framework-cqrs-eventsourcing/branch/master)
