@@ -52,7 +52,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
 
             Guid entityId = Guid.NewGuid();
             //Create this entity by creating an EntityCreated event
-            ApplyThisEvent(new EntityCreated(entityId));
+            Apply(new EntityCreated(entityId));
         }
         
         public int Version => _version;
@@ -73,7 +73,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
             
             foreach(var domainEvent in eventStreams)
             {
-                ApplyThisEvent(domainEvent);
+                Apply(domainEvent);
                 _version++;
             }
 
@@ -108,7 +108,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
         #endregion Overridden Methods from IAggregateRoot
 
         #region Protected virtual Methods
-        protected virtual void ApplyThisEvent(EventStream domainEvent)
+        protected virtual void Apply(EventStream domainEvent)
         {
             events.Add(domainEvent);
         }

@@ -12,6 +12,8 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
         void Register<TCommand>(ICommandHandler<TCommand> Handler) where TCommand : ICommand;
         ICommandHandler<TCommand, IResponse> Resolved<TCommand, IResponse>() where TCommand : ICommand<IResponse>;
         ICommandHandler<TCommand> Resolved<TCommand>() where TCommand : ICommand;
+
+        ICommandDispatcher BuildCommandDispatcher();
     }
 
     public class CommandHandlerFactory : ICommandHandlerFactory
@@ -72,6 +74,11 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
                 throw new KeyNotFoundException($"Command Handler for this command : {key.Name} is not registered");
             }
             return commandHandlers[key] as ICommandHandler<TCommand>;
-        }        
+        }
+
+        public ICommandDispatcher BuildCommandDispatcher()
+        {
+            return new CommandDispatcher(this);
+        }
     }
 }

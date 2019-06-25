@@ -31,11 +31,11 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Test.MockObjects
         public List<string> Foos => foos;
         public void AddFoos(string foo)
         {
-            ApplyThisEvent(new FoosAdded(foo, AggregateRootId));
+            Apply(new FoosAdded(foo, AggregateRootId));
         }
         public void SetBar(int bar)
         {
-            ApplyThisEvent(new BarSet(bar, AggregateRootId));
+            Apply(new BarSet(bar, AggregateRootId));
         }
         [AggregateRootEventHandler]
         private void OnAddedFoos(FoosAdded foosAdded)

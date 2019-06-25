@@ -10,12 +10,13 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
         private bool _startOfTheSequence;
         private bool _endOfTheSequence;
         private DateTime _dateTimeCreated;
-        
+        private string _eventName;
         public EventStream(Guid aggregateRootId)
         {          
             _aggregateRootId    = aggregateRootId;
             _guid               = Guid.NewGuid();
             _dateTimeCreated    = DateTime.UtcNow;
+            _eventName          = this.GetType().Name;
         }
 
         public DateTime DateTimeCreated => _dateTimeCreated;
@@ -41,6 +42,5 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
         {
             return _endOfTheSequence == true;
         }
-
     }
 }
