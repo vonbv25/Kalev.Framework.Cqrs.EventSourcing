@@ -6,10 +6,10 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
 {
     public interface IAggregateRoot
     {
-        Guid AggregateRootId { get; }
         IEnumerable<EventStream> AllEvents { get; }
+        void RegisterEventHandlers(ExternalEventHandlers externalEventHandlers);
         void LoadFromHistory(IEnumerable<EventStream> eventStreams);
-        void ApplyEventChanges();
-        void ConfirmedChanges();
+        void ConfirmChanges();
+        
     }
 }

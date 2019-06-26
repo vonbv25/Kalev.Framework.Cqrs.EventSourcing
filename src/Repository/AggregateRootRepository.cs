@@ -41,7 +41,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Repository {
                 _eventStore.Save(@event);
             }
             
-            aggregateRoot.ApplyEventChanges();
+            aggregateRoot.ConfirmChanges();
 
             return aggregateRoot;
 
@@ -55,7 +55,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Repository {
                     _eventStore.Save(@event);
                 }
 
-                aggregateRoot.ApplyEventChanges();
+                aggregateRoot.ConfirmChanges();
 
                 return aggregateRoot;
             }

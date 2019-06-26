@@ -14,11 +14,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
     public class EventProcessor : IEventProcessor
     {
         private readonly IEventHandlerFactory _eventHandlerFactory;
-
-        public EventProcessor(Func<IEventHandlerFactory> eventFactoryFunc)
-        {
-            _eventHandlerFactory = eventFactoryFunc.Invoke();
-        }
+        
         public EventProcessor(IEventHandlerFactory eventHandlerFactory)
         {
             _eventHandlerFactory = eventHandlerFactory;
@@ -28,19 +24,25 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
         {
             IEnumerable<IEventHandler<EventStream>> eventHandlers = _eventHandlerFactory.Resolved<EventStream>();
 
-            foreach(var eventHandler in eventHandlers)
-            {
-                eventHandler.NotifyAsync(domainEvent).Wait();
+            if (eventHandlers!= null){
+                foreach(var eventHandler in eventHandlers)
+                {
+                    eventHandler.NotifyAsync(domainEvent).Wait();
+                }
             }
+
         }
         public async Task SendAsync(EventStream domainEvent)
         {
             IEnumerable<IEventHandler<EventStream>> eventHandlers = _eventHandlerFactory.Resolved<EventStream>();
 
-            foreach(var eventHandler in eventHandlers)
-            {
-                await eventHandler.NotifyAsync(domainEvent);
+            if (eventHandlers!= null){
+                foreach(var eventHandler in eventHandlers)
+                {
+                    await eventHandler.NotifyAsync(domainEvent);
+                }
             }
+
         }
     }
 }

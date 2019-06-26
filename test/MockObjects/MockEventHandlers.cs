@@ -10,35 +10,35 @@ namespace test.MockObjects
         {
         }
     }
-
+    
     public class NotifyFoo : IEventHandler<MockHasBeenAddedEvent>
     {
-        public Task NotifyAsync(MockHasBeenAddedEvent eventStream)
-        {
-            throw new NotImplementedException();
+        public async Task NotifyAsync(MockHasBeenAddedEvent eventStream)
+        {          
+            return;
         }
     }
 
     public class NotifyBar : IEventHandler<MockHasBeenAddedEvent>
     {
-        public Task NotifyAsync(MockHasBeenAddedEvent eventStream)
-        {
-            throw new NotImplementedException();
+        public async Task NotifyAsync(MockHasBeenAddedEvent eventStream)
+        {          
+            return;
         }
     }
 
     public class MockHasBeenRemovedEvent : EventStream
     {
         public MockHasBeenRemovedEvent(Guid aggregateRootId) : base(aggregateRootId)
-        {
+        {            
         }
     }
 
     public class NotifyMockOne : IEventHandler<MockHasBeenRemovedEvent>
     {
-        public Task NotifyAsync(MockHasBeenRemovedEvent eventStream)
+        public async Task NotifyAsync(MockHasBeenRemovedEvent eventStream)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

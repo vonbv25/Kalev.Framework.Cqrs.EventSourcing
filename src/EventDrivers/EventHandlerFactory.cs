@@ -7,8 +7,8 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
     public interface IEventHandlerFactory
     {
         void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : EventStream;
-
         List<IEventHandler<TEventStream>> Resolved<TEventStream>() where TEventStream : EventStream;
+        IEventProcessor BuildEventProcessor();
     }
 
     public class EventHandlerFactory : IEventHandlerFactory
@@ -19,6 +19,12 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
         {
             registeredEventHandlers = new Dictionary<Type, List<IEventHandlerBase>>();
         }
+
+        public IEventProcessor BuildEventProcessor()
+        {
+            return new EventProcessor(this);
+        }
+
         public void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : EventStream
         {
             var key = typeof(TEventStream);
@@ -43,7 +49,8 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
 
             if (registeredEventHandlers.Count == 0 || !registeredEventHandlers.ContainsKey(key))
             {
-                throw new KeyNotFoundException($"Event handlers for {key.Name} not found");
+                //TODO: Find a way to get the name of the derived type
+                return null;
             }
 
             List<IEventHandler<TEventStream>> eventHandlers = new List<IEventHandler<TEventStream>>();
