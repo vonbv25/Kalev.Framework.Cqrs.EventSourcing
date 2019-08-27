@@ -8,36 +8,34 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
 {
     public interface ICommandHandlerFactory
     {
-        void Register<TCommand, IResponse>(ICommandHandler<TCommand, IResponse> Handler) where TCommand : ICommand<IResponse>;
         void Register<TCommand>(ICommandHandler<TCommand> Handler) where TCommand : ICommand;
-        ICommandHandler<TCommand, IResponse> Resolved<TCommand, IResponse>() where TCommand : ICommand<IResponse>;
-        ICommandHandler<TCommand> Resolved<TCommand>() where TCommand : ICommand;
-
+        ICommandHandler<TCommand> Resolve<TCommand>() where TCommand : ICommand;
+        void Register<TCommand, TDomainState>(ICommandHandler<TCommand, TDomainState> Handler) where TCommand : ICommand<TDomainState>;
+        ICommandHandler<TCommand, TDomainState> Resolve<TCommand, TDomainState>() where TCommand : ICommand<TDomainState>;
         ICommandDispatcher BuildCommandDispatcher();
     }
 
     public class CommandHandlerFactory : ICommandHandlerFactory
     {
-        private Dictionary<Type, ICommandHandlerBase> commandHandlersWithResponse;
+        private Dictionary<Type, ICommandHandlerBase> commandHandlersThatReturnsDomainState;
         private Dictionary<Type, ICommandHandlerBase> commandHandlers;        
         public CommandHandlerFactory()
         {
-            commandHandlersWithResponse = new Dictionary<Type, ICommandHandlerBase>();
-            commandHandlers             = new Dictionary<Type, ICommandHandlerBase>();
+            commandHandlersThatReturnsDomainState   = new Dictionary<Type, ICommandHandlerBase>();
+            commandHandlers                         = new Dictionary<Type, ICommandHandlerBase>();
         }
-
-        public void Register<TCommand, IResponse>(ICommandHandler<TCommand, IResponse> Handler) where TCommand : ICommand<IResponse>
+        public void Register<TCommand, TDomainState>(ICommandHandler<TCommand, TDomainState> Handler) where TCommand : ICommand<TDomainState>
         {
             var key = typeof(TCommand);
 
             //does key exist? then replace the existing value that is map to the key
-            if(commandHandlersWithResponse.ContainsKey(key))
+            if(commandHandlersThatReturnsDomainState.ContainsKey(key))
             {
-                commandHandlersWithResponse[key] = Handler;
+                commandHandlersThatReturnsDomainState[key] = Handler;
             }
             else 
             {
-                commandHandlersWithResponse.Add(key, Handler);
+                commandHandlersThatReturnsDomainState.Add(key, Handler);
             }
         }
         public void Register<TCommand>(ICommandHandler<TCommand> Handler) where TCommand : ICommand
@@ -54,18 +52,18 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
                 commandHandlers.Add(key, Handler);
             }
         }
-        public ICommandHandler<TCommand, IResponse> Resolved<TCommand, IResponse>() where TCommand : ICommand<IResponse>
+        public ICommandHandler<TCommand, TDomainState> Resolve<TCommand, TDomainState>() where TCommand : ICommand<TDomainState>
         {
             var key = typeof(TCommand);
 
-            if(commandHandlersWithResponse.Count == 0 || !commandHandlersWithResponse.ContainsKey(key))
+            if(commandHandlersThatReturnsDomainState.Count == 0 || !commandHandlersThatReturnsDomainState.ContainsKey(key))
             {
                 throw new KeyNotFoundException($"Command Handler for this command : {key.Name} is not registered");
             }
 
-            return commandHandlersWithResponse[key] as ICommandHandler<TCommand, IResponse>;
+            return commandHandlersThatReturnsDomainState[key] as ICommandHandler<TCommand, TDomainState>;
         }
-        public ICommandHandler<TCommand> Resolved<TCommand>() where TCommand : ICommand
+        public ICommandHandler<TCommand> Resolve<TCommand>() where TCommand : ICommand
         {
             var key = typeof(TCommand);
 
@@ -80,5 +78,6 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
         {
             return new CommandDispatcher(this);
         }
+
     }
 }

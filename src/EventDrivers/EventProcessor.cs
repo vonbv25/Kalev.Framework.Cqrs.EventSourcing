@@ -6,9 +6,9 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
 {
     public interface IEventProcessor
     {
-        Task SendAsync(EventStream domainEvent);
+        Task SendAsync(IEvent domainEvent);
 
-        void Send(EventStream domainEvent);
+        void Send(IEvent domainEvent);
     }
 
     public class EventProcessor : IEventProcessor
@@ -20,9 +20,9 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
             _eventHandlerFactory = eventHandlerFactory;
         }
 
-        public void Send(EventStream domainEvent)
+        public void Send(IEvent domainEvent)
         {
-            IEnumerable<IEventHandler<EventStream>> eventHandlers = _eventHandlerFactory.Resolved<EventStream>();
+            IEnumerable<IEventHandler<IEvent>> eventHandlers = _eventHandlerFactory.Resolved<IEvent>();
 
             if (eventHandlers!= null){
                 foreach(var eventHandler in eventHandlers)
@@ -32,9 +32,9 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
             }
 
         }
-        public async Task SendAsync(EventStream domainEvent)
+        public async Task SendAsync(IEvent domainEvent)
         {
-            IEnumerable<IEventHandler<EventStream>> eventHandlers = _eventHandlerFactory.Resolved<EventStream>();
+            IEnumerable<IEventHandler<IEvent>> eventHandlers = _eventHandlerFactory.Resolved<IEvent>();
 
             if (eventHandlers!= null){
                 foreach(var eventHandler in eventHandlers)

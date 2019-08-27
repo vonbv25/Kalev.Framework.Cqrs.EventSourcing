@@ -9,7 +9,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
     {
         
     }
-    public interface IEventHandler<TEventStream> : IEventHandlerBase where TEventStream : EventStream
+    public interface IEventHandler<TEventStream> : IEventHandlerBase where TEventStream : IEvent
     {
         Task NotifyAsync(TEventStream eventStream);
     }

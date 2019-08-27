@@ -5,7 +5,7 @@ using Kalev.Framework.Cqrs.EventSourcing.Domain;
 
 namespace Kalev.Framework.Cqrs.EventSourcing.Repository
 {
-    public interface IDocumentRepository<T> where T : IAggregateRoot
+    public interface IEventRepository<T> where T : IAggregateRoot
     {
         #region IO Operations    
         T Save(T aggregateRoot);

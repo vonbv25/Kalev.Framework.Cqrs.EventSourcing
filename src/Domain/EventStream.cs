@@ -1,8 +1,9 @@
+using Kalev.Framework.Cqrs.EventSourcing.EventDrivers;
 using System;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
+namespace Kalev.Framework.Cqrs.EventSourcing.Domain
 {
-    public abstract class EventStream
+    public abstract class EventStream : IEvent
     {
         private Guid _guid;
         private Guid _aggregateRootId;

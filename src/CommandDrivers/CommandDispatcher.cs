@@ -7,32 +7,32 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
 {
     public interface ICommandDispatcher
     {
-        Task DispatchAsync<TCommand>(TCommand command) where TCommand : ICommand;        
-        Task<TResponse> DispatchAsync<TCommand, TResponse>(TCommand command) where TCommand : ICommand<TResponse>;
+        Task DispatchAsync<TCommand>(TCommand command) where TCommand : ICommand;
     }
-    public class CommandDispatcher : ICommandDispatcher
+
+    public interface ICommandWithDomainStateDispatcher
+    {
+        Task<TDomainState> DispatchAsync<TCommand, TDomainState>(TCommand command) where TCommand : ICommand<TDomainState>;
+    }
+    public class CommandDispatcher : ICommandDispatcher, ICommandWithDomainStateDispatcher
     {
         private readonly ICommandHandlerFactory factory;
-        public CommandDispatcher(Func<ICommandHandlerFactory> factoryFunc)
-        {
-            factory = factoryFunc.Invoke();
-        }
 
         public CommandDispatcher(ICommandHandlerFactory factory)
         {
             this.factory = factory;
         }
         
-        public async Task<TResponse> DispatchAsync<TCommand, TResponse>(TCommand command) where TCommand : ICommand<TResponse>
+        public async Task<TDomainState> DispatchAsync<TCommand, TDomainState>(TCommand command) where TCommand : ICommand<TDomainState>
         {
-            var handler = factory.Resolved<TCommand, TResponse>();
+            var handler = factory.Resolve<TCommand, TDomainState>();
 
             return await handler.HandleAsync(command);
         }
 
         public async Task DispatchAsync<TCommand>(TCommand command) where TCommand : ICommand
         {
-            var handler = factory.Resolved<TCommand>();
+            var handler = factory.Resolve<TCommand>();
 
             await handler.HandleAsync(command);
         }

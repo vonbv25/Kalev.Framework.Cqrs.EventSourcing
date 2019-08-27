@@ -6,8 +6,8 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
 {
     public interface IEventHandlerFactory
     {
-        void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : EventStream;
-        List<IEventHandler<TEventStream>> Resolved<TEventStream>() where TEventStream : EventStream;
+        void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : IEvent;
+        List<IEventHandler<TEventStream>> Resolved<TEventStream>() where TEventStream : IEvent;
         IEventProcessor BuildEventProcessor();
     }
 
@@ -25,7 +25,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
             return new EventProcessor(this);
         }
 
-        public void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : EventStream
+        public void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : IEvent
         {
             var key = typeof(TEventStream);
             
@@ -43,7 +43,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
             }
         }
 
-        public List<IEventHandler<TEventStream>> Resolved<TEventStream>() where TEventStream : EventStream
+        public List<IEventHandler<TEventStream>> Resolved<TEventStream>() where TEventStream : IEvent
         {            
             var key = typeof(TEventStream);
 

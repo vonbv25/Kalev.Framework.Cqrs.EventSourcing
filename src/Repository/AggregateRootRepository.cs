@@ -6,7 +6,7 @@ using Kalev.Framework.Cqrs.EventSourcing.EventDrivers;
 using Kalev.Framework.Cqrs.EventSourcing.Utilities;
 
 namespace Kalev.Framework.Cqrs.EventSourcing.Repository {
-    public class AggregateRootRepository<T> : IDocumentRepository<T> where T : IAggregateRoot, new() 
+    public class AggregateRootRepository<T> : IEventRepository<T> where T : IAggregateRoot, new() 
     {
         private readonly IEventStore _eventStore;
         public AggregateRootRepository (IEventStore eventStore) 
