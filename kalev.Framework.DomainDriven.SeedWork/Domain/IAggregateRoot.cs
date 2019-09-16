@@ -1,8 +1,6 @@
-using Kalev.Framework.Cqrs.EventSourcing.EventDrivers;
-using System;
 using System.Collections.Generic;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.Domain
+namespace Kalev.Framework.DomainDriven.SeedWork.Domain
 {
     public interface IAggregateRoot
     {
@@ -10,6 +8,8 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
         void RegisterEventHandlers(ExternalEventHandlers externalEventHandlers);
         void LoadFromHistory(IEnumerable<EventStream> eventStreams);
         void ConfirmChanges();
-        
+        void Commit();
+
+
     }
 }

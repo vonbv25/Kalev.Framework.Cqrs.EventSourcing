@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kalev.Framework.Cqrs.EventSourcing.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -13,12 +14,15 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
         void Register<TCommand, TDomainState>(ICommandHandler<TCommand, TDomainState> Handler) where TCommand : ICommand<TDomainState>;
         ICommandHandler<TCommand, TDomainState> Resolve<TCommand, TDomainState>() where TCommand : ICommand<TDomainState>;
         ICommandDispatcher BuildCommandDispatcher();
+        void RegisterCommandLogger<TCommandLogger>(TCommandLogger commandLogger) where TCommandLogger : class, ICommandLogger;
+        ICommandLogger ResolveLogger();
     }
 
     public class CommandHandlerFactory : ICommandHandlerFactory
     {
         private Dictionary<Type, ICommandHandlerBase> commandHandlersThatReturnsDomainState;
-        private Dictionary<Type, ICommandHandlerBase> commandHandlers;        
+        private Dictionary<Type, ICommandHandlerBase> commandHandlers;
+        private ICommandLogger commandLogger;
         public CommandHandlerFactory()
         {
             commandHandlersThatReturnsDomainState   = new Dictionary<Type, ICommandHandlerBase>();
@@ -56,11 +60,10 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
         {
             var key = typeof(TCommand);
 
-            if(commandHandlersThatReturnsDomainState.Count == 0 || !commandHandlersThatReturnsDomainState.ContainsKey(key))
+            if (commandHandlersThatReturnsDomainState.Count == 0 || !commandHandlersThatReturnsDomainState.ContainsKey(key))
             {
-                throw new KeyNotFoundException($"Command Handler for this command : {key.Name} is not registered");
+                return null;
             }
-
             return commandHandlersThatReturnsDomainState[key] as ICommandHandler<TCommand, TDomainState>;
         }
         public ICommandHandler<TCommand> Resolve<TCommand>() where TCommand : ICommand
@@ -69,15 +72,21 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
 
             if(commandHandlers.Count == 0 || !commandHandlers.ContainsKey(key))
             {
-                throw new KeyNotFoundException($"Command Handler for this command : {key.Name} is not registered");
+                return null;
             }
             return commandHandlers[key] as ICommandHandler<TCommand>;
         }
-
         public ICommandDispatcher BuildCommandDispatcher()
         {
             return new CommandDispatcher(this);
         }
-
+        public ICommandLogger ResolveLogger()
+        {
+            return commandLogger;
+        }
+        void ICommandHandlerFactory.RegisterCommandLogger<TCommandLogger>(TCommandLogger commandLogger)
+        {
+            this.commandLogger = commandLogger;
+        }
     }
 }

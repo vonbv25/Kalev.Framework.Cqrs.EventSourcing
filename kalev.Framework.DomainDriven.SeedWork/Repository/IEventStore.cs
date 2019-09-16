@@ -1,9 +1,10 @@
-using Kalev.Framework.Cqrs.EventSourcing.Domain;
+
+using Kalev.Framework.DomainDriven.SeedWork.Domain;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.Repository
+namespace Kalev.Framework.DomainDriven.SeedWork.Repository
 {
     public interface IEventStore
     {

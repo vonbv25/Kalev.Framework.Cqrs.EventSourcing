@@ -1,11 +1,11 @@
-﻿using Kalev.Framework.Cqrs.EventSourcing.Domain;
+﻿using Kalev.Framework.DomainDriven.SeedWork.Domain;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.Repository
+namespace Kalev.Framework.DomainDriven.SeedWork.Repository
 {
     public class InMemoryEventStore : IEventStore
     {
@@ -32,14 +32,14 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Repository
 
         public async Task<List<EventStream>> FindAsync(Guid aggregateRootId)
         {
-            Task<List<EventStream>> findValueTask = Task.Run<List<EventStream>> ( () => { return Find(aggregateRootId); } );
+            Task<List<EventStream>> findValueTask = Task.Run( () => { return Find(aggregateRootId); } );
 
             return await findValueTask;
         }
 
         public async Task<IEnumerable<List<EventStream>>> FindAsync(Func<List<EventStream>, bool> predicate)
         {
-            Task<IEnumerable<List<EventStream>>> findValueTask = Task.Run<IEnumerable<List<EventStream>>> ( () => 
+            Task<IEnumerable<List<EventStream>>> findValueTask = Task.Run( () => 
             { 
                 return Find(predicate); 
             } );

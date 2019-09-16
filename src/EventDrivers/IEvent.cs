@@ -6,5 +6,6 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
 {
     public interface IEvent
     {
+        Guid Guid { get; }
     }
 }

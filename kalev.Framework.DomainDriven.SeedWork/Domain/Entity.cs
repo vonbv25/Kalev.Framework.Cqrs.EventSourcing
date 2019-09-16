@@ -1,4 +1,3 @@
-using Kalev.Framework.Cqrs.EventSourcing.EventDrivers;
 using Kalev.Framework.Cqrs.EventSourcing.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,10 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.Domain
+namespace Kalev.Framework.DomainDriven.SeedWork.Domain
 {
-    public delegate Task ExternalEventHandlers(EventStream eventStream);
-    public abstract class AggregateEntity : IAggregateRoot
+    public abstract class Entity : IAggregateRoot
     {
         #region Declartions
         private int _version;
@@ -18,30 +16,32 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
         private Guid aggregateRootId;
         private ExternalEventHandlers externalEventHandlers;
         private List<EventStream> events;
-        private Dictionary<Type, MethodInfo> aggregateRootEventHandlerRegistry;
+        private Dictionary<Type, MethodInfo> entityStates;
 
         #endregion Declartions
-        protected AggregateEntity()
+        protected Entity()
         {            
-            aggregateRootEventHandlerRegistry   = new Dictionary<Type, MethodInfo>();
+            entityStates                        = new Dictionary<Type, MethodInfo>();
             events                              = new List<EventStream>();
             _version                            = 0;
-            //Retrieve all the methods of this entity that has our marker (methods decorated by AggregateRootEvent)
+            //Retrieve all the methods of this entity that has our marker (methods decorated by EntityState)
             //Then register it in our eventhandler registry. All event handler registered will be run after we confirm 
             //all the changes needed for this entity.
             var myEventHandlers = GetType()
                                     .GetRuntimeMethods()
-                                    .Where(m => m.GetCustomAttributes(typeof(RegisterAttribute), false)
+                                    .Where(m => m.GetCustomAttributes(typeof(EntityStateAttribute), false)
                                     .Count() > 0)
                                     .ToList();
             
             if (myEventHandlers != null)
             {
-                myEventHandlers.ForEach( (methodInfo) =>
-                {
-                    aggregateRootEventHandlerRegistry.Add(methodInfo.GetParameters().First().ParameterType, 
-                    methodInfo);
-                } );
+                myEventHandlers.ForEach( 
+                    (methodInfo) =>
+                    {
+                        entityStates.Add(methodInfo.GetParameters()
+                                                   .First()
+                                                   .ParameterType, methodInfo);
+                    } );
             }
         }
         public Guid AggregateRootId {get => aggregateRootId; set => aggregateRootId =value; }
@@ -55,9 +55,6 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
         #region Overridden Methods from IAggregateRoot
         public void LoadFromHistory(IEnumerable<EventStream> eventStreams)
         {
-            //Confirm the first the changes done in this Aggregate root before loading events from the eventStore
-            events.Clear();
-
             foreach(var domainEvent in eventStreams)
             {
                 Apply(domainEvent);
@@ -83,7 +80,8 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
             {
                 sequenceId++;
                 _event.SequenceId = sequenceId;
-                aggregateRootEventHandlerRegistry[_event.GetType()].Invoke(this, new object[] { _event } );
+                //Update the state of the this Entity by applying all Entity States
+                entityStates[_event.GetType()].Invoke(this, new object[] { _event } );
                 
                 if(externalEventHandlers!= null)
                 {
@@ -91,6 +89,11 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
                     await externalEventHandlers(_event);
                 }
             } );
+        }
+
+        public void Commit()
+        {
+            events.Clear();
         }
 
         #endregion Overridden Methods from IAggregateRoot
@@ -111,13 +114,13 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is AggregateEntity))
+            if (obj == null || !(obj is Entity))
                 return false;
             if (Object.ReferenceEquals(this, obj))
                 return true;
             if (this.GetType() != obj.GetType())
                 return false;
-            AggregateEntity item = (AggregateEntity)obj;
+            Entity item = (Entity)obj;
             if (item.IsTransient() || this.IsTransient())
                 return false;
             else
@@ -137,14 +140,14 @@ namespace Kalev.Framework.Cqrs.EventSourcing.Domain
             else
                 return base.GetHashCode();
         }
-        public static bool operator ==(AggregateEntity left, AggregateEntity right)
+        public static bool operator ==(Entity left, Entity right)
         {
             if (Object.Equals(left, null))
                 return (Object.Equals(right, null));
             else
                 return left.Equals(right);
         }
-        public static bool operator !=(AggregateEntity left, AggregateEntity right)
+        public static bool operator !=(Entity left, Entity right)
         {
             return !(left == right);
         }

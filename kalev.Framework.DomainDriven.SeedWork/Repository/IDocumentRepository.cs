@@ -1,9 +1,10 @@
+using Kalev.Framework.DomainDriven.SeedWork.Domain;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Kalev.Framework.Cqrs.EventSourcing.Domain;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.Repository
+
+namespace Kalev.Framework.DomainDriven.SeedWork.Repository
 {
     public interface IEventRepository<T> where T : IAggregateRoot
     {

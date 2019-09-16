@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.Domain
+namespace Kalev.Framework.DomainDriven.SeedWork.Domain
 {
     public abstract class ValueObject
     {

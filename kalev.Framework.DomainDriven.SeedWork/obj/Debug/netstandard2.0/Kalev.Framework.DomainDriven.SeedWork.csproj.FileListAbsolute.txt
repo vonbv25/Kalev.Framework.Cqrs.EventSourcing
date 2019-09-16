@@ -1,0 +1,9 @@
+C:\Projects\Kalev.Framework.Cqrs.EventSourcing\kalev.Framework.DomainDriven.SeedWork\bin\Debug\netstandard2.0\Kalev.Framework.DomainDriven.SeedWork.deps.json
+C:\Projects\Kalev.Framework.Cqrs.EventSourcing\kalev.Framework.DomainDriven.SeedWork\bin\Debug\netstandard2.0\Kalev.Framework.DomainDriven.SeedWork.dll
+C:\Projects\Kalev.Framework.Cqrs.EventSourcing\kalev.Framework.DomainDriven.SeedWork\bin\Debug\netstandard2.0\Kalev.Framework.DomainDriven.SeedWork.pdb
+C:\Projects\Kalev.Framework.Cqrs.EventSourcing\kalev.Framework.DomainDriven.SeedWork\obj\Debug\netstandard2.0\Kalev.Framework.DomainDriven.SeedWork.csprojAssemblyReference.cache
+C:\Projects\Kalev.Framework.Cqrs.EventSourcing\kalev.Framework.DomainDriven.SeedWork\obj\Debug\netstandard2.0\Kalev.Framework.DomainDriven.SeedWork.csproj.CoreCompileInputs.cache
+C:\Projects\Kalev.Framework.Cqrs.EventSourcing\kalev.Framework.DomainDriven.SeedWork\obj\Debug\netstandard2.0\Kalev.Framework.DomainDriven.SeedWork.AssemblyInfoInputs.cache
+C:\Projects\Kalev.Framework.Cqrs.EventSourcing\kalev.Framework.DomainDriven.SeedWork\obj\Debug\netstandard2.0\Kalev.Framework.DomainDriven.SeedWork.AssemblyInfo.cs
+C:\Projects\Kalev.Framework.Cqrs.EventSourcing\kalev.Framework.DomainDriven.SeedWork\obj\Debug\netstandard2.0\Kalev.Framework.DomainDriven.SeedWork.dll
+C:\Projects\Kalev.Framework.Cqrs.EventSourcing\kalev.Framework.DomainDriven.SeedWork\obj\Debug\netstandard2.0\Kalev.Framework.DomainDriven.SeedWork.pdb

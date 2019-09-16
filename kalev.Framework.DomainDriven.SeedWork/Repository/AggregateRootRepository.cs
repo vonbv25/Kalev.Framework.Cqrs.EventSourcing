@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Kalev.Framework.DomainDriven.SeedWork.Domain;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Kalev.Framework.Cqrs.EventSourcing.Domain;
-using Kalev.Framework.Cqrs.EventSourcing.EventDrivers;
-using Kalev.Framework.Cqrs.EventSourcing.Utilities;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.Repository {
+namespace Kalev.Framework.DomainDriven.SeedWork.Repository
+{
     public class AggregateRootRepository<T> : IEventRepository<T> where T : IAggregateRoot, new() 
     {
         private readonly IEventStore _eventStore;

@@ -9,14 +9,11 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
     {
         
     }
-    public interface ICommandHandler<TCommand, TDomainState> : ICommandHandlerBase
-    where TCommand : ICommand<TDomainState>
+    public interface ICommandHandler<TCommand, TDomainState> : ICommandHandlerBase where TCommand : ICommand<TDomainState>
     {
         Task<TDomainState> HandleAsync(TCommand command);
     }
-
-    public interface ICommandHandler<TCommand> : ICommandHandlerBase
-    where TCommand : ICommand
+    public interface ICommandHandler<TCommand> : ICommandHandlerBase where TCommand : ICommand
     {
          Task HandleAsync(TCommand command);       
     }

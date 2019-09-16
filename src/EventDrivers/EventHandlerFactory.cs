@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kalev.Framework.Cqrs.EventSourcing.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,18 +7,22 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
 {
     public interface IEventHandlerFactory
     {
-        void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : IEvent;
-        List<IEventHandler<TEventStream>> Resolved<TEventStream>() where TEventStream : IEvent;
+        void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : class, IEvent;
+        void RegisterEventLogger<TEventLogger>(TEventLogger eventLogger) where TEventLogger : class, IEventLogger;
+        List<IEventHandler<TEventStream>> Resolve<TEventStream>() where TEventStream : class, IEvent;
+        IEventLogger ResolveLogger();
         IEventProcessor BuildEventProcessor();
     }
 
     public class EventHandlerFactory : IEventHandlerFactory
     {
         private Dictionary<Type, List<IEventHandlerBase>> registeredEventHandlers;
+        private IEventLogger eventLogger;
 
         public EventHandlerFactory()
         {
             registeredEventHandlers = new Dictionary<Type, List<IEventHandlerBase>>();
+            eventLogger = new ConsoleEventLogger();
         }
 
         public IEventProcessor BuildEventProcessor()
@@ -25,7 +30,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
             return new EventProcessor(this);
         }
 
-        public void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : IEvent
+        public void Register<TEventStream>(IEventHandler<TEventStream> eventHandler) where TEventStream : class, IEvent
         {
             var key = typeof(TEventStream);
             
@@ -43,7 +48,18 @@ namespace Kalev.Framework.Cqrs.EventSourcing.EventDrivers
             }
         }
 
-        public List<IEventHandler<TEventStream>> Resolved<TEventStream>() where TEventStream : IEvent
+        public void RegisterEventLogger<TEventLogger>(TEventLogger eventLogger) where TEventLogger : class, IEventLogger
+        {
+            this.eventLogger = eventLogger;
+        }
+
+
+        public IEventLogger ResolveLogger()
+        {
+            return eventLogger;
+        }
+
+        public List<IEventHandler<TEventStream>> Resolve<TEventStream>() where TEventStream : class, IEvent
         {            
             var key = typeof(TEventStream);
 

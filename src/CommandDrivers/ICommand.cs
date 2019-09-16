@@ -8,8 +8,8 @@ namespace Kalev.Framework.Cqrs.EventSourcing.CommandDrivers
     {
         Guid Guid { get; }        
     }
-    public interface ICommand<out TDomainState>
+    public interface ICommand<out TDomainState> : ICommand
     {
-        Guid Guid { get; }
+
     }
 }

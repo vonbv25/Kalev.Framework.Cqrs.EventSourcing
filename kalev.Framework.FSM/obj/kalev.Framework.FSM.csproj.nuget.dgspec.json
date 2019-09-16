@@ -1,0 +1,55 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Projects\\Kalev.Framework.Cqrs.EventSourcing\\kalev.Framework.FSM\\kalev.Framework.FSM.csproj": {}
+  },
+  "projects": {
+    "C:\\Projects\\Kalev.Framework.Cqrs.EventSourcing\\kalev.Framework.FSM\\kalev.Framework.FSM.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\Kalev.Framework.Cqrs.EventSourcing\\kalev.Framework.FSM\\kalev.Framework.FSM.csproj",
+        "projectName": "kalev.Framework.FSM",
+        "projectPath": "C:\\Projects\\Kalev.Framework.Cqrs.EventSourcing\\kalev.Framework.FSM\\kalev.Framework.FSM.csproj",
+        "packagesPath": "C:\\Users\\vvillaruel\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\Kalev.Framework.Cqrs.EventSourcing\\kalev.Framework.FSM\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\vvillaruel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard1.4"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "http://navpm/nuget/navitaire-nuget/": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard1.4": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard1.4": {
+          "dependencies": {
+            "NETStandard.Library": {
+              "target": "Package",
+              "version": "[1.6.1, )",
+              "autoReferenced": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

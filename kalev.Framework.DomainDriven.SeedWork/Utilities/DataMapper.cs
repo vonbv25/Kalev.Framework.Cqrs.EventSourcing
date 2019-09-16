@@ -1,19 +1,14 @@
-using System.Linq;
-using System.Collections.Generic;
-using Kalev.Framework.Cqrs.EventSourcing.Domain;
-using Kalev.Framework.Cqrs.EventSourcing.Utilities;
-using System.Reflection;
-using System;
+
 
 public static class DataMapper<T> where T : new()
 {
-    //private static Dictionary<Type, Dictionary<string, PropertyInfo>> _propertyReflectionCache =  new Dictionary<Type, Dictionary<string, PropertyInfo>>();
+    //private static Dictionary<Type, Dictionary<string, PropertyInfo>> _propertyReflectionCache = new Dictionary<Type, Dictionary<string, PropertyInfo>>();
     //private static Dictionary<Type, FieldInfo[]> _fieldReflectionCache = new Dictionary<Type, FieldInfo[]>();
     //public static T MapFrom(IAggregateRoot aggregateRoot)
     //{
     //    T TDataModel = new T();
 
-    //    PropertyInfo[] propertyInfos = GetPropertyInfo 
+    //    PropertyInfo[] propertyInfos = GetPropertyInfo
 
     //    //aggregateRoot.GetType()
     //    //                .GetFields()
@@ -26,8 +21,6 @@ public static class DataMapper<T> where T : new()
     //    //                    dataModelProperty.SetValue(property.va)
 
     //    //                });
-
-
 
     //}
 
