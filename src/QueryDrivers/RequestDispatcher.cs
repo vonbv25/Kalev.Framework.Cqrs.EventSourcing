@@ -7,10 +7,10 @@ namespace Kalev.Framework.Cqrs.EventSourcing.QueryDrivers
 {
     public interface IRequestDispatcher
     {
-        TResponse DispatchRequest<TRequest, TResponse>(TRequest request)
+        TResponse SendRequest<TRequest, TResponse>(TRequest request)
             where TResponse : class
             where TRequest : IRequest<TResponse>;
-        Task<TResponse> DispatchRequestAsync<TRequest, TResponse>(TRequest request) 
+        Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request) 
             where TResponse : class 
             where TRequest : IRequest<TResponse>;
     }
@@ -22,7 +22,7 @@ namespace Kalev.Framework.Cqrs.EventSourcing.QueryDrivers
             this.requestHandlerFactory = requestHandlerFactory;
         }
 
-        public TResponse DispatchRequest<TRequest, TResponse>(TRequest request)
+        public TResponse SendRequest<TRequest, TResponse>(TRequest request)
             where TRequest : IRequest<TResponse>
             where TResponse : class
         {
@@ -31,13 +31,13 @@ namespace Kalev.Framework.Cqrs.EventSourcing.QueryDrivers
             return requestHandler.SendRequest(request);
         }
 
-        public async Task<TResponse> DispatchRequestAsync<TRequest, TResponse>(TRequest request)
+        public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest request)
             where TRequest : IRequest<TResponse>
             where TResponse : class
         {
             var requestHandler = requestHandlerFactory.Resolve<TRequest, TResponse>();
 
-            return await requestHandler.SendRequestAsync(request);
+            return await requestHandler.SendRequestAsync(request).ConfigureAwait(false);
         }
     }
 }
