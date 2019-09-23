@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.QueryDrivers
+namespace Kalev.Framework.Cqrs.EventSourcing.RequestDrivers
 {
     public interface IRequestHandlerBase
     {
@@ -13,7 +13,6 @@ namespace Kalev.Framework.Cqrs.EventSourcing.QueryDrivers
         where TResponse : class 
         where TRequest : IRequest<TResponse>
     {
-        Task<TResponse> SendRequestAsync(TRequest request);
-        TResponse SendRequest(TRequest request);
+        Task<TResponse> Handle(TRequest request);
     }
 }

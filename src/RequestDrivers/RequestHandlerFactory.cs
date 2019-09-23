@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kalev.Framework.Cqrs.EventSourcing.QueryDrivers
+namespace Kalev.Framework.Cqrs.EventSourcing.RequestDrivers
 {
     public interface IRequestHandlerFactory
     {
